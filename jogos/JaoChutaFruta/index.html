@@ -1,0 +1,68 @@
+<!doctype html> 
+<html lang="en"> 
+<head>
+<meta charset="UTF-8" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>Jão Chuta Fruta</title>
+    <script type="text/javascript" src="js/phaser.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="jogo.css" />
+    <script type="text/javascript" src="js/jquery-latest.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="jquery.fancybox.css" />
+    <script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
+</head>
+<body>
+<div style="width: 100%; height: 100%;">
+<center>
+<nav id="main-menu">
+    <ul class="nav-bar">
+        <li class="nav-button-reiniciar"><a href="javascript:reiniciar();">Reiniciar</a></li>
+        <li class="nav-button-full" onclick="fullscreen();"><a href="#" >FullScreen</a></li>
+        <li class="mudo" id="mudo" onclick="toggleMudo();"><a href="#" >Mudo</a></li>
+        <li class="nav-button-info"><a class="various" href="#creditos" onclick="creditos();">Sobre</a></li>
+    </ul>
+</nav>
+<div id="jogo"></div>
+</center>
+
+<div id="frase_fim" style="margin-bottom: 10px; position: absolute; bottom: 0;">Para jogar use as setinhas. Para reiniciar pressione "r". Chute pra direita;</div>
+</div>
+<script type="text/javascript" src="js/jogo.js"></script>
+<script type="text/javascript" src="js/index.min.js"></script>
+<div id="creditos" style="display: none;">
+    <h3>O Jogo</h3>
+    <p>Jão Chuta Fruta</p>
+    <p>Chute a fruta na cara das pessoas! Não deixe elas te pegarem ou contarão tudo pros seus pais!!<br/>Se uma delas entrar na sua escola, você morrerá!<br/>
+        Movimente-se pra cima e pra baixo e chute a fruta pressionando para a direita.<br/><br/>Coma peixe.</p>
+    <h3>Autor</h3>
+    Hugo Eustáquio<br/><a href="http://twitter.com/hugoeustaquio">@hugoeustaquio</a><br/><br/>
+    <h3>Personagens <a target="_blank" href="http://www.decrepitos.com/">Decrépitos</a></h3>
+    João Carvalho (O Chutador de Frutas)<br/><a target="_blank" href="http://twitter.com/assimdisseojoao">@assimdisseojoao</a><br/><br/>
+    Rafael Mordente<br/><a target="_blank" href="http://twitter.com/rafaelmordente">@rafaelmordente</a><br/><br/>
+    Daniel Bayer<br/><a target="_blank" href="http://twitter.com/danoneel">@danoneel</a><br/><br/>
+    <h3>Créditos</h3>
+    Gramado e asfalto:
+    <a target="_blank" href="http://freestocktextures.com">Free Stock Textures</a><br/>
+    Sons:
+    <a target="_blank" href="http://www.flashkit.com/soundfx/Electronic/Arcade/">FlashKit</a><br/>
+    Soldados e Frutas:
+    <a target="_blank" href="http://cliparts.co">cliparts.co</a><br/>
+    Ícones:
+    <a href="http://www.freepik.com" target="_blank">Freepik</a> por <a href="http://www.flaticon.com/" target="_blank">FlatIcon</a><br/>
+    Jogador de futebol:
+    <a target="_blank" href="https://www.surgemedia.ie/life-after-flash-neymar-in-action-with-css-only/">SurgeMedia</a><br/>
+    Framework e engine:
+    <a target="_blank" href="http://phaser.io/">Phaser</a><br/>
+</div>
+</body>
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-64687332-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</html>
