@@ -348,6 +348,7 @@ function pegaCogumelo (player, cog) {
 }
 
 function bateuRecorde(retorno) {
+    console.log(retorno);
     if (retorno == "true") {
         alert("Tú vacilou feiãum! Te cadastrei!!1! S2");
     } else if (!retorno == "false") {
