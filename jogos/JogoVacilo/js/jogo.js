@@ -366,12 +366,28 @@ function verificaVitoria() {
 }
 
 function enviaRecorde() {
-    $.post('recorde.php',{ nome: nomeVacilao, tempo: tempoPerdido }, function(retorno) {
-        if (retorno == "true") {
-            alert("Tú vacilou feiãum! Te cadastrei!!1! S2");
-        } else if (!retorno == "false") {
-            setTimeout(enviaRecorde, 300);
+    $.ajax({  
+        type:"GET",
+        crossDomain: true,
+        url: "http://jogovacilo.2fh.co/recorde.php",
+        data: { nome: nomeVacilao, tempo: tempoPerdido },
+        dataType: "jsonp", 
+        timeout: 10000,
+        success: function(reetorno) { 
+            if (retorno == "true") {
+                alert("Tú vacilou feiãum! Te cadastrei!!1! S2");
+            } else if (!retorno == "false") {
+                setTimeout(enviaRecorde, 300);
+            }
+        },
+        error:function(xhr,status,error){
+            console.log(status)
         }
+    });
+    
+    
+    $.post('recorde.php',{ nome: nomeVacilao, tempo: tempoPerdido }, function(retorno) {
+        
     });
 }
 
