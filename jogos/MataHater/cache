@@ -1,9 +1,0 @@
-CACHE MANIFEST
-
-img/*
-audio/*
-js/*
-
-FALLBACK:
-/html/ index.html
-# 2015-09-05 v2.1
