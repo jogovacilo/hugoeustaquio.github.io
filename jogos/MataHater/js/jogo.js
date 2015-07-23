@@ -35,7 +35,7 @@ function create() {
 
     p = game.add.sprite(32, 400, 'player');
     p.animations.add('right', [0, 1, 2, 3, 4, 5, 6, 7, 8], 10, true);
-    p.animations.add('left', [9, 10, 11, 12, 13, 14, 15, 16, 17], 10, true);
+    p.animations.add('left', [17, 16, 15, 14, 13, 12, 11, 10, 9], 10, true);
 
     game.physics.arcade.enable(p);
     game.physics.arcade.gravity.y = 250;
