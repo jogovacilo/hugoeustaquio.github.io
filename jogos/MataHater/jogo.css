@@ -1,0 +1,55 @@
+html, body {
+  width:  100%;
+  height: 100%;
+  margin: 0px;
+  overflow-x: hidden;
+}
+
+#jogo {
+    z-index: 0;
+}
+
+#canvas {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin:auto;
+}
+canvas {
+   display: inline;
+}
+
+
+#main-menu .nav-bar { list-style:none; margin-top: 0px; z-index: 2;}
+#main-menu .nav-bar li { display:inline; padding:0 10px; display:inline-block;}
+
+#main-menu .nav-bar li a {
+    text-decoration: none;
+    padding-left: 25px;
+    text-transform: uppercase;
+    color: #333;
+    text-shadow: 1px 1px 1px #ccc;
+}
+
+.nav-bar .nav-button-reiniciar a { background:url("img/refresh.png") no-repeat 0px 0px transparent; display: inline-block; height: 25px;}
+.nav-bar .nav-button-full a { background:url("img/full.png") no-repeat 0px 0px transparent; display: inline-block; height: 25px;}
+.nav-bar .nav-button-info a { background:url("img/info.png") no-repeat 0px 0px transparent; display: inline-block; height: 25px;}
+.nav-bar .nav-button-ranking a { background:url("img/ranking.png") no-repeat 0px 0px transparent; display: inline-block; height: 25px;}
+.mudo { background:url("img/mudo.png") no-repeat 0px 0px transparent; display: inline-block; height: 25px;}
+.som { background:url("img/som.png") no-repeat 0px 0px transparent; display: inline-block; height: 25px;}
+
+#creditos {
+    text-align: center;
+}
+#creditos p{
+    text-align: left;
+}
+div:-webkit-full-screen {
+  width: 100% !important;
+}
+canvas:-webkit-full-screen {
+  width: 100% !important;
+  height: 100% !important;
+}
+
