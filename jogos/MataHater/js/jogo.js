@@ -13,6 +13,7 @@ function preload() {
 }
 
 function create() {
+    $('#loading').hide();
     trilha = game.add.audio('trilha', 1, true);
     trilha.play('',0,1,true);
 
