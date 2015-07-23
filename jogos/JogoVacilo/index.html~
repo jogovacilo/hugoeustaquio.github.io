@@ -1,0 +1,72 @@
+<!doctype html> 
+<html lang="en" manifest="cache"> 
+<head>
+<meta charset="UTF-8" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>Decrépitos Game</title>
+    <script type="text/javascript" src="js/phaser.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="jogo.css" />
+    <script type="text/javascript" src="js/jquery-latest.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="jquery.fancybox.css" />
+    <script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
+</head>
+<body>
+<div style="width: 100%; height: 100%;">
+<center>
+<nav id="main-menu">
+    <ul class="nav-bar">
+        <li class="nav-button-reiniciar"><a href="javascript:reiniciar();">Reiniciar</a></li>
+        <li class="nav-button-full" onclick="fullscreen();"><a href="#" >FullScreen</a></li>
+        <li class="mudo" id="mudo" onclick="toggleMudo();"><a href="#" >Mudo</a></li>
+        <li class="nav-button-ranking"><a id="ranking" href="ranking.php" onclick="creditos();">Ranking</a></li>
+        <li class="nav-button-info"><a class="various" href="#creditos" onclick="creditos();">Sobre</a></li>
+    </ul>
+</nav>
+<div id="jogo"></div>
+</center>
+
+<div id="frase_fim" style="margin-bottom: 10px; position: absolute; bottom: 0;">Para jogar, use as setinhas. Para reiniciar pressione "r".</div>
+</div>
+<script type="text/javascript" src="js/jogo.js"></script>
+<script type="text/javascript" src="js/index.min.js"></script>
+<div id="creditos" style="display: none;">
+    <h3>O Jogo</h3>
+    <p>Seja um decrépito aleatório e pegue todos os cogumelos podres, fezes e caveiras que encontrar, mas tome cuidado: se pegar um único coração você morre!</p>
+    <p>Para movimentar o decrépito, use as setinhas do seu teclado. Você pode dar um salto duplo se apertar pra cima duas vezes.
+     Para visualizar o jogo em tela cheia, pressione 'f'. Para recomeçar pressione 'r'. Para sair do modo de
+    de tela cheia, pressione 'esc'. Para conhecer os personagens, ouça o podcast dos decrépitos!</p>
+    <h3>Autor</h3>
+    Hugo Eustáquio<br/><a href="http://twitter.com/hugoeustaquio">@hugoeustaquio</a><br/><br/>
+    <h3>Personagens <a target="_blank" href="http://www.decrepitos.com/">Decrépitos</a></h3>
+    Rafael Mordente<br/><a target="_blank" href="http://twitter.com/rafaelmordente">@rafaelmordente</a><br/><br/>
+    João Carvalho<br/><a target="_blank" href="http://twitter.com/assimdisseojoao">@assimdisseojoao</a><br/><br/>
+    Daniel Bayer<br/><a target="_blank" href="http://twitter.com/danoneel">@danoneel</a><br/><br/>
+    <h3>Créditos</h3>
+    Céu:
+    <a target="_blank" href="http://yewhral.deviantart.com/art/Cloudy-sky-practice-again-170266097">yewhral.deviantart.com</a><br/>
+    Chão:
+    <a target="_blank" href="http://freestocktextures.com">Free Stock Textures</a><br/>
+    Caveira, coração e cogumelo:
+    <a target="_blank" href="http://www.clipartbest.com/">Clip Art Best</a><br/>
+    Bosta:
+    <a target="_blank" href="http://www.dumpkin.com/?p=37">Dumpkin</a><br/>
+    Sons:
+    <a target="_blank" href="http://www.flashkit.com/soundfx/Electronic/Arcade/">FlashKit</a><br/>
+    Ícones:
+    <a href="http://www.freepik.com" target="_blank">Freepik</a> por <a href="http://www.flaticon.com/" target="_blank">FlatIcon</a><br/>
+    Framework, engine e demais artes:
+    <a target="_blank" href="http://phaser.io/">Phaser</a><br/>
+</div>
+</body>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-64687332-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</html>
