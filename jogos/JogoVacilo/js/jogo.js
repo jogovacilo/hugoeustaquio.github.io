@@ -374,9 +374,8 @@ function verificaVitoria() {
 }
 
 function enviaRecorde() {
-    $.ajax({  
+    $.ajax({
         type:"GET",
-        crossDomain: true,
         dataType: 'jsonp',
         url: "http://jogovacilo.2fh.co/recorde.php",
         data: { nome: nomeVacilao, tempo: tempoPerdido },
