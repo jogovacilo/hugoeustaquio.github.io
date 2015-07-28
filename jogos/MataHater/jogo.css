@@ -67,6 +67,5 @@ canvas:-webkit-full-screen {
 }
 
 #loading-image {
-  position: absolute;
   z-index: 100;
 }
