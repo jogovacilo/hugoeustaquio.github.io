@@ -106,7 +106,11 @@ function create() {
 
     frutasDaMorte.enableBody = true;
     frutasDaMorte.physicsBodyType = Phaser.Physics.ARCADE;
-    frutasDaMorte.createMultiple(30, 'frutas');
+    frutasDaMorte.createMultiple(25, 'frutas', 0);
+    frutasDaMorte.createMultiple(10, 'frutas', 1);
+    frutasDaMorte.createMultiple(10, 'frutas', 2);
+    frutasDaMorte.createMultiple(10, 'frutas', 3);
+    frutasDaMorte.createMultiple(10, 'frutas', 4);
     frutasDaMorte.setAll('anchor.x', 0.5);
     frutasDaMorte.setAll('anchor.y', 1);
     frutasDaMorte.setAll('outOfBoundsKill', true);
@@ -115,7 +119,7 @@ function create() {
 
 function enemyFires () {
     //  Grab the first bullet we can from the pool
-    enemyBullet = frutasDaMorte.getFirstExists(false);
+    enemyBullet = frutasDaMorte.getRandom(false);
     livingEnemies.length=0;
     minionGrp.forEachAlive(function(minion) {
         // put every living enemy in an array
@@ -127,13 +131,12 @@ function enemyFires () {
         var shooter=livingEnemies[random];
         // And fire the bullet from this enemy
         enemyBullet.reset(shooter.body.x, shooter.body.y);
-        enemyBullet.body.velocity.x = 200;
-        enemyBullet.body.velocity.y = -300;
-        enemyBullet.body.gravity.x = -100;
+        enemyBullet.body.velocity.x = game.rnd.integerInRange(-200,200);
+        enemyBullet.body.velocity.y = game.rnd.integerInRange(-300,250);
+        enemyBullet.body.gravity.x = -90;
 //        game.physics.arcade.moveToObject(enemyBullet,player,120);
-        firingTimer = game.time.now + 500;
+        firingTimer = game.time.now + 250;
     }
-
 }
 
 function ultMovimentoDireita() {
