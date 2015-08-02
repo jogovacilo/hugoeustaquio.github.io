@@ -2,19 +2,6 @@ function creditos() {
     game.paused = true;
 }
 
-function fullscreen() {
-    var el = document.getElementById('canvas');
-    if (el.webkitRequestFullScreen) {
-        el.webkitRequestFullscreen();
-    } else if (el.mozRequestFullScreen) {
-        el.mozRequestFullScreen();
-    } else if (el.msRequestFullscreen){
-        el.msRequestFullscreen();
-    } else {
-        el.requestFullscreen();
-    }
-}
-
 $(document).ready(function() {
     $("#ranking").fancybox({
         width    : 800,
