@@ -1,8 +1,8 @@
 var game = new Phaser.Game(800, 513, Phaser.AUTO, 'jogo', {preload : preload, create : create, update : update});
 var map, objs, tileset, layer, daniel, cursors, socao, corre, tiro, princesas;
-var tiroGrp, minionGrp, frutasDaMorte, frequenciaDisparo = 850, firingTimer = 0, livingEnemies = [], vidas=3, vidasGrp, seFudeu = false, ficaMorto = false;
+var tiroGrp, minionGrp, frutasDaMorte, frequenciaDisparo = 2000, firingTimer = 0, livingEnemies = [], vidas=3, vidasGrp, seFudeu = false, ficaMorto = false;
 // sons
-var somMorri, somWhat, trilhaSonora, somDesgracado, btnRecomecar;
+var somMorri, somWhat, trilhaSonora, somDesgracado, sonsBayer, btnRecomecar;
 var ult_movimento_direita = true;
 
 function fullscreen() {
@@ -11,7 +11,7 @@ function fullscreen() {
 }
 
 function reiniciar() {
-    frequenciaDisparo = 850, vidas = 3;
+    frequenciaDisparo = 2000, vidas = 3;
     seFudeu = false, ficaMorto = false;
     if (btnRecomecar) {
         btnRecomecar.destroy();
@@ -86,6 +86,7 @@ function inicioJogo() {
 }
 
 function preload() {
+    game.load.audio('sonsBayer', ['audio/sons_bayer.ogg', 'audio/sons_bayer.m4a']);
     game.load.audio('trilha', ['audio/ratm.ogg', 'audio/ratm.m4a']);
     game.load.audio('what', ['audio/what.ogg', 'audio/what.m4a']);
     game.load.audio('morri', ['audio/morri.ogg', 'audio/morri.m4a']);
@@ -112,6 +113,20 @@ function create() {
     somMorri = game.add.audio('morri');
     somWhat = game.add.audio('what');
     trilhaSonora.play('',0,1,true);
+    sonsBayer = game.add.audio('sonsBayer');
+    sonsBayer.allowMultiple = true;
+    sonsBayer.addMarker('coco', 2.7, 2.0);
+    sonsBayer.addMarker('teMatar', 5.1, 2.0);
+    sonsBayer.addMarker('argh', 12.0, 0.5);
+    sonsBayer.addMarker('ai', 14.2, 1.1);
+    sonsBayer.addMarker('vish', 16.3, 1.3);
+    sonsBayer.addMarker('uai', 18.8, 1.0);
+    sonsBayer.addMarker('morreAi', 21.5, 1.3);
+    sonsBayer.addMarker('aai', 23.8, 1.0);
+    sonsBayer.addMarker('hahaha', 25.5, 2.0);
+    sonsBayer.addMarker('viado', 27.9, 2.3);
+    sonsBayer.addMarker('morreMinion', 32.0, 1.6);
+    sonsBayer.addMarker('ohDesgraca', 34.5, 1.6);
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
     game.canvas.id = 'canvas';
@@ -165,7 +180,7 @@ function gameOver() {
         somMorri.play();
         trilhaSonora.stop();
         daniel.animations.play('morte', 5, false);
-        setTimeout(function() {ficaMorto = true;}, 2000);
+        setTimeout(function() {daniel.play('morto');}, 2000);
         setTimeout(function() {
             btnRecomecar = game.add.button(350, 250, 'button', reiniciar, this, 2, 1, 0);
             btnRecomecar.fixedToCamera = true;
@@ -185,6 +200,14 @@ function sofre(player, obj) {
     obj.kill();
     if (vidas > 0) {
         vidas--;
+        switch (game.rnd.integerInRange(0,3)) {
+        case 0: sonsBayer.play('ai');
+            break;
+        case 1: sonsBayer.play('aai');
+            break;
+        default: sonsBayer.play('argh');
+            break;
+        }
         vidasGrp.getFirstAlive().kill();
     } else {
         gameOver();
@@ -233,16 +256,11 @@ function update() {
             minion.movendo_direita = false;
     }, null, this);
     minionGrp.forEachAlive(function(minion){
-//        if (minion.foiSocado && !minion.morrendo)
-//            minion.animations.play('machucado');
-//        else if (minion.morrendo)
-//            minion.animations.play('morrendo', 4, false, true);
         if (minion.movendo_direita) {
             minion.body.velocity.x = 50;
         } else {
             minion.body.velocity.x = -50;
         }
-//        minion.animations.play('morrendo', 3, false, true);
     });
 
     daniel.body.velocity.x = 0;
@@ -289,11 +307,11 @@ function update() {
         // soltar tiro no máximo uma vez por segundo
         if (tiro.isDown && game.time.now > frequenciaDisparo) {
             atirar();
-            frequenciaDisparo = game.time.now + 850;
+            frequenciaDisparo = game.time.now + 2000;
         }
-    } else if (ficaMorto){
-        daniel.play('morto');
-    }
+    } //else if (ficaMorto){
+//        daniel.play('morto');
+//    }
     if (game.time.now > firingTimer) {
         arremessoMinion();
     }
