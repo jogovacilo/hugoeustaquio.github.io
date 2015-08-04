@@ -1,9 +1,9 @@
 var game = new Phaser.Game(800, 513, Phaser.AUTO, 'jogo', {preload : preload, create : create, update : update});
 var map, objs, tileset, layer, daniel, cursors, socao, corre, tiro, princesas;
-var tiroGrp, minionGrp, frutasDaMorte, frequenciaDisparo = 2000, firingTimer = 0, livingEnemies = [], vidas=3, vidasGrp, seFudeu = false, ficaMorto = false;
+var tiroGrp, minionGrp, frutasDaMorte, frequenciaDisparo = 2000, firingTimer = 0, minionsVivos = [], frutasParadas = [], vidas=3, vidasGrp, seFudeu = false, ficaMorto = false;
 // sons
-var somMorri, somWhat, trilhaSonora, somDesgracado, sonsBayer, btnRecomecar;
-var ult_movimento_direita = true;
+var somMorri, somWhat, trilhaSonora, somDesgracado, sonsBayer, somSoco;
+var btnRecomecar, ult_movimento_direita = true;
 
 function fullscreen() {
     game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
@@ -90,8 +90,10 @@ function preload() {
     game.load.audio('trilha', ['audio/ratm.ogg', 'audio/ratm.m4a']);
     game.load.audio('what', ['audio/what.ogg', 'audio/what.m4a']);
     game.load.audio('morri', ['audio/morri.ogg', 'audio/morri.m4a']);
+    game.load.audio('punch', ['audio/punch.ogg', 'audio/punch.m4a']);
     game.load.audio('desgracado', ['audio/desgracado.ogg', 'audio/desgracado.m4a']);
     game.load.tilemap('cenariojs', 'js/cenario.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.image('placa', 'img/placa.png');
     game.load.image('cenarioimg', 'img/cenario.png');
     game.load.image('jcpr', 'img/jcpr.png');
     game.load.image('mord', 'img/rosa.png');
@@ -108,11 +110,13 @@ function preload() {
 
 function create() {
     $('#loading').hide();
+
     somDesgracado = game.add.audio('desgracado');
     trilhaSonora = game.add.audio('trilha', 1, true);
     somMorri = game.add.audio('morri');
     somWhat = game.add.audio('what');
     trilhaSonora.play('',0,1,true);
+    somSoco = game.add.audio('punch');
     sonsBayer = game.add.audio('sonsBayer');
     sonsBayer.allowMultiple = true;
     sonsBayer.addMarker('coco', 2.7, 2.0);
@@ -136,6 +140,10 @@ function create() {
 
     layer = map.createLayer('World1');
     layer.resizeWorld();
+
+    placa = game.add.image(80, 228, 'placa');
+    placa.scale.x = 0.8;
+    placa.scale.y = 0.8;
 
     tiroGrp = game.add.group();
     minionGrp = game.add.group();
@@ -169,6 +177,14 @@ function create() {
     cursors.right.onDown.add(ultMovimentoDireita, this);
     cursors.left.onDown.add(ultMovimentoEsquerda, this);
 
+
+    // preload da fase 2
+    game.load.image('jasa', 'img/jasa.png');
+    /*
+    a: pular    z: Correr
+    e: esquerda x: soco
+    d: direita  c tiro
+     */
     // criando os inimigos
     inicioJogo();
 }
@@ -229,11 +245,13 @@ function update() {
         if (socao.isDown) {
             //tocar som "tum"
             if (minion.foiSocado && !somWhat.isPlaying) {
+                somSoco.play();
                 minion.morrendo = true;
                 somWhat.play();
                 minion.animations.play('morrendo', 3, false, true);
                 setTimeout(function() {minion.kill();}, 3000);
             } else if (!somWhat.isPlaying){
+                somSoco.play();
                 minion.animations.play('machucado');
                 somWhat.play();
                 minion.foiSocado = true;
@@ -332,22 +350,32 @@ function atirar() {
 }
 
 function arremessoMinion () {
-    enemyBullet = frutasDaMorte.getRandom(false);
-    livingEnemies.length=0;
+    frutasParadas.length=0;
+    frutasDaMorte.forEachAlive(function(fruta) {
+        if (fruta.body.velocity.y == 0 && fruta.body.velocity.x == 0)
+            frutasParadas.push(fruta);
+    });
+    if (frutasParadas.length > 0)
+        frutaArremesso = frutasParadas[game.rnd.integerInRange(0,frutasParadas.length-1)];
+    else
+        frutaArremesso = frutasDaMorte.getRandom(false);
+
+    minionsVivos.length=0;
     minionGrp.forEachAlive(function(minion) {
         if (!minion.morrendo)
-            livingEnemies.push(minion);
+            minionsVivos.push(minion);
     });
-    if (enemyBullet && livingEnemies.length > 0) {
-        var random = game.rnd.integerInRange(0,livingEnemies.length-1);
-        var shooter=livingEnemies[random];
-        enemyBullet.reset(shooter.body.x, shooter.body.y);
-        enemyBullet.body.velocity.x = game.rnd.integerInRange(-200,200);
-        enemyBullet.body.velocity.y = game.rnd.integerInRange(-300,250);
-        if (enemyBullet.body.velocity.x < 0)
-            enemyBullet.body.gravity.x = game.rnd.integerInRange(-90,-50);
+    
+    if (frutaArremesso && minionsVivos.length > 0) {
+        var random = game.rnd.integerInRange(0,minionsVivos.length-1);
+        var shooter=minionsVivos[random];
+        frutaArremesso.reset(shooter.body.x, shooter.body.y);
+        frutaArremesso.body.velocity.x = game.rnd.integerInRange(-150,150);
+        frutaArremesso.body.velocity.y = game.rnd.integerInRange(-300,250);
+        if (frutaArremesso.body.velocity.x < 0)
+            frutaArremesso.body.gravity.x = game.rnd.integerInRange(-90,-50);
         else
-            enemyBullet.body.gravity.x = game.rnd.integerInRange(50,90);
+            frutaArremesso.body.gravity.x = game.rnd.integerInRange(50,90);
         firingTimer = game.time.now + 250;
     }
 }
