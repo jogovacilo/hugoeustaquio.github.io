@@ -1,5 +1,4 @@
 function faseDois() {
-    $('#loading').show();
     var inclinacao, tirosGrp, btnTiro, tmpTiro = 0;
     var temp = game.rnd.integerInRange(300, 3000);
     var explosions;

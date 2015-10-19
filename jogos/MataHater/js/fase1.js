@@ -26,6 +26,7 @@ function faseUm() {
     function animacaoPassaFase1() {
         trilhaSonora.stop();
         trilhaSonoraChefe.stop();
+        $('#loading').show();
         this.game.stateTransition.to('animacaoFase1');
     }
 

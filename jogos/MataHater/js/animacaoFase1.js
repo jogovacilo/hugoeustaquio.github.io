@@ -1,5 +1,4 @@
 function animacaoFase1() {
-    $('#loading').show();
     var textoDaniel = ["Cadê meus amigos?", "Fala logo!", "Você só diz 'banana'?", "Não tenho tempo, vou pro seu planeta procura-los!"];
     var textoCorrente = 0;
 
@@ -71,6 +70,7 @@ function animacaoFase1() {
     }
 
     function passaFaseDois() {
+        $('#loading').show();
         this.game.stateTransition.to('faseDois');
     }
 }
