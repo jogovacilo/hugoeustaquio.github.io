@@ -226,9 +226,7 @@ function faseUm() {
             }
             game.physics.arcade.collide(chefeMinion, daniel, function(chefeMinion, daniel) {
                 sofre(daniel, null);
-                // mover chefe minion para direção contrária ao jogador e depois de 1 segundo voltar na direção
                 chefeMinion.movendo_direita = (chefeMinion.x - daniel.x > 0);
-//                chefeMinion
             }, null, this);
             // fazer a barrinha de saúde do chefão acompanhar a tela:
             barraSaudeChefao.setPosition(game.camera.position.x, 50);
@@ -326,9 +324,9 @@ function faseUm() {
         daniel.body.velocity.x = 0;
         if (!seFudeu) {
             if (cursors.up.isDown) {
-                if (daniel.body.onFloor() && corre.isDown)
+                if (daniel.body.blocked.down && corre.isDown)
                     daniel.body.velocity.y = -240;
-                else if (daniel.body.onFloor())
+                else if (daniel.body.blocked.down)
                     daniel.body.velocity.y = -200;
             }
             if (cursors.left.isDown) {
@@ -368,7 +366,7 @@ function faseUm() {
         if (game.time.now > firingTimer) {
             arremessoMinion();
         }
-        if (!mostraAnimacao && daniel.x > 2848) {
+        if (daniel.x > 2848 && !chefeMinion) {
             animacaoChefao();
         }
     }

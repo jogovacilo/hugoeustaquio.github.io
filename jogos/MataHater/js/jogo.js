@@ -13,6 +13,7 @@ window.onload = function () {
             }
         }
     });
+    //game.state.add('aguarde', aguarde);
     game.state.add('faseUm', faseUm);
     game.state.add('animacaoFase1', animacaoFase1);
     game.state.add('faseDois', faseDois);
@@ -48,7 +49,7 @@ function reiniciar() {
 var map, objs, tileset, layer, daniel, cursors, socao, corre, tiro, princesas, chefeMinion;
 var tiroGrp, minionGrp, frutasDaMorte, firingTimer = 0, minionsVivos = [], frutasParadas = [], vidas=5, vidasGrp,
     caixaGrp, seFudeu = false, ficaMorto = false, tiros = 15, qtdeTirosTxt;
-var fase = 1, mostraAnimacao = false, jaMostrouAnimacao = false, tempoAnimacaoFase1 = 3000, estaMachucado = false;
+var estaMachucado = false;
 var barraSaudeChefao;
 
 // sons

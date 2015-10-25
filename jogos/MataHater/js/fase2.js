@@ -121,6 +121,7 @@ function faseDois() {
         enemy.kill();
         bullet.kill()
     }
+
     function atirar() {
         var tiro = tirosGrp.getFirstExists(false);
         if (tiro && game.time.now > tmpTiro) {
