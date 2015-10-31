@@ -19,29 +19,29 @@ window.onload = function () {
     game.state.add('faseDois', faseDois);
     game.state.add('faseTres', faseTres);
     game.state.add('zerou', zerou);
-
     game.state.start('faseUm');
 }
 
 function reiniciar() {
-//    trilhaSonora.pause();
-//    trilhaSonoraChefe.pause();
-//    somDesgracado.pause();
-    if (btnRecomecar) {
-        btnRecomecar.destroy();
-    }
     vidas = 5, tiros = 15;
     seFudeu = false, ficaMorto = false, estaMachucado = false;
     daniel.x = 32;
     daniel.y = 400;
-    minionGrp.removeAll();
-    princesas.removeAll();
-    frutasDaMorte.removeAll();
-    vidasGrp.removeAll();
-    caixaGrp.removeAll();
-    if (chefeMinion) {
-        chefeMinion.destroy();
-        chefeMinion = null;
+    if (btnRecomecar)
+        btnRecomecar.destroy();
+    if (game.state.current != 'faseUm'){
+        this.game.stateTransition.to('faseUm');
+    } else {
+        qtdeTirosTxt.text = 'x15';
+        minionGrp.removeAll();
+        princesas.removeAll();
+        frutasDaMorte.removeAll();
+        vidasGrp.removeAll();
+        caixaGrp.removeAll();
+        if (chefeMinion) {
+            chefeMinion.destroy();
+            chefeMinion = null;
+        }
     }
     inicioJogo();
 }
@@ -63,7 +63,6 @@ function fullscreen() {
 }
 
 function inicioJogo() {
-    trilhaSonora.play();
     vidasGrp.create(675, 15, 'vidas');
     vidasGrp.create(700, 15, 'vidas');
     vidasGrp.create(725, 15, 'vidas');

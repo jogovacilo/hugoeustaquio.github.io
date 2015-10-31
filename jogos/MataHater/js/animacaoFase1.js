@@ -1,16 +1,13 @@
 function animacaoFase1() {
-    var textoDaniel = ["Cadê meus amigos?", "Fala logo!", "Você só diz 'banana'?", "Não tenho tempo, vou pro \nseu planeta procura-los!"];
+    var textoDaniel = ["Cadê meus amigos?", "Fala logo!", "Você só diz 'banana'?",
+            "Não tenho tempo, vou pro \n       seu planeta procura-los!"];
     var textoCorrente = 0;
     var choroMinion;
     var irEmbora = false;
     var tirosGrp;
 
     this.preload = function() {
-        game.load.image('cenario', 'img/CenarioAnimacao1.png');
-        game.load.audio('trilha', ['audio/mt1.ogg', 'audio/mt1.m4a']);
-        game.load.audio('choraminion', ['audio/choraminion.ogg', 'audio/choraminion.m4a']);
-        game.load.image('tiro', 'img/tiro.png');
-        game.load.spritesheet('rastro', 'img/rastro.png', 128, 128);
+
     }
 
     this.create = function() {
@@ -75,6 +72,7 @@ function animacaoFase1() {
 
     function trocaLegendaMinion() {
         legenda.style.fill = "#FF00FF";
+        legenda.x = 220;
         legenda.setText('Minion: "Foram pro meu planeta!"');
         choroMinion.play();
         game.time.events.add(Phaser.Timer.SECOND * 5, trocaLegendaDaniel, this);
@@ -83,6 +81,7 @@ function animacaoFase1() {
     function trocaLegendaDaniel() {
         legenda.style.fill = "#FFFFFF";
         if (textoDaniel[textoCorrente]) {
+            legenda.x = 266-(textoDaniel[textoCorrente].length/17);
             legenda.setText("Daniel: \"" +  textoDaniel[textoCorrente] + "\"");
             textoCorrente++;
             game.time.events.add(Phaser.Timer.SECOND * 5, trocaLegendaMinion, this);

@@ -22,7 +22,7 @@
 <center>
 <nav id="main-menu">
     <ul class="nav-bar">
-        <li class="nav-button-info"><a href="javascript:game.stateTransition.to('animacaoFase1');;">fase2</a></li>
+        <li class="nav-button-info"><a href="javascript:game.stateTransition.to('faseDois');">faseDOIS</a></li>
         <li class="nav-button-reiniciar"><a href="javascript:reiniciar();">Reiniciar</a></li>
         <li class="nav-button-full" onclick="fullscreen();"><a href="#" >FullScreen</a></li>
         <li class="mudo" id="mudo" onclick="toggleMudo();"><a href="#" >Mudo</a></li>
@@ -36,7 +36,7 @@
 <script type="text/javascript" src="js/jogo.js"></script>
 <script type="text/javascript" src="js/index.js"></script>
 <center>
-<div id="loading">
+<div id="loading" style="z-index: 20;">
 <center>
   <br/><br/><br/><br/><img id="loading-image" src="img/wait.gif" alt="Loading..." />
   <br/>Aguarde...
@@ -47,9 +47,12 @@
     <h3>O Jogo</h3>
     <p>Mate os haters! Ódio aos haters! GRRRR!</p>
     <p>Para visualizar o jogo em tela cheia, pressione 'f'. Para recomeçar pressione 'r'. Para sair do modo de
-    de tela cheia, pressione 'esc'. Para conhecer os personagens, ouça o podcast dos decrépitos!</p>
-    <h3>Autor</h3>
-    Hugo Eustáquio<br/><a href="http://twitter.com/hugoeustaquio">@hugoeustaquio</a><br/><br/>
+    de tela cheia, pressione 'esc'. <br/>
+    Para se movimentar, use as setinhas do seu teclado. Você pode correr apertando 'z' enquanto se movimenta.<br/>
+    Atire pressionando a tecla 'c'. Goipeie o adversário apertando 'x' enquanto o toca.</br>
+    Para conhecer os personagens, ouça o podcast dos decrépitos!</p>
+    <h3>Programador</h3>
+    Hugo Eustáquio<br/><a target="_blank" href="http://twitter.com/hugoeustaquio">@hugoeustaquio</a><br/><br/>
     <h3>Personagens <a target="_blank" href="http://www.decrepitos.com/">Decrépitos</a></h3>
     Rafael Mordente<br/><a target="_blank" href="http://twitter.com/rafaelmordente">@rafaelmordente</a><br/><br/>
     João Carvalho<br/><a target="_blank" href="http://twitter.com/assimdisseojoao">@assimdisseojoao</a><br/><br/>
@@ -60,15 +63,21 @@
     Áudio:
 <!--     <a target="_blank" href="https://www.youtube.com/watch?v=ac-wpfJWaEI"></a> -->
     <a target="_blank" href="https://www.youtube.com/watch?v=BC46cnPh5qQ">Rage Against The Machine - Wake Up</a><br/>
-    <a target="_blank" href="https://www.youtube.com/watch?v=h0Y1krrkK0Q">Deep Purple - Smoke on the water</a><br/>
+    <a target="_blank" href="https://youtu.be/ac-wpfJWaEI">Pantera - Cowboys From Hell</a><br/>
+    <a target="_blank" href="https://www.youtube.com/watch?v=h0Y1krrkK0Q">Deep Purple - Smoke On The Water</a><br/>
     <a target="_blank" href="https://www.youtube.com/watch?v=gwHGUK5gkoI">Rage Against The Machine - Know Your Enemy</a><br/>
     <a target="_blank" href="https://www.youtube.com/watch?v=3qd0MpSBTxY">Kiss - Rock and Roll All Night</a><br/>
     Sons:
     <a target="_blank" href="http://www.flashkit.com/soundfx/Electronic/Arcade/">FlashKit</a><br/>
+    <a target="_blank" href="https://freesound.org/search/?q=minion+&f=&s=score+desc&advanced=0&g=1">FreeSound</a><br/>
     Ícones:
     <a href="http://www.freepik.com" target="_blank">Freepik</a> por <a href="http://www.flaticon.com/" target="_blank">FlatIcon</a><br/>
     Framework, engine e demais artes:
     <a target="_blank" href="http://phaser.io/">Phaser</a><br/>
+    Especial agradecimento:
+    <a target="_blank" href="http://codeperfectionist.com/articles/phaser-js-tutorial-building-a-polished-space-shooter-game-part-1/">
+        Tutorial para fazer jogos de nave
+    </a><br/>
 </div>
 </body>
 <script>

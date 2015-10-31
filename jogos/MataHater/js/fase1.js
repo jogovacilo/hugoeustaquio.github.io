@@ -60,8 +60,28 @@ function faseUm() {
         game.load.spritesheet('player', 'img/matador.png', 50, 62);
         game.load.image('chain', 'img/chain.png');
 
-     // preload da fase 2
+        // animação transicao fase 2
+        game.load.image('cenario', 'img/CenarioFaseDois.jpg');
         game.load.image('jasa', 'img/jasa.png');
+        game.load.image('nave_minion1', 'img/nave_minion1.png');
+        game.load.image('nave_minion2', 'img/minion_fase2.png');
+        game.load.image('chefe', 'img/chefe_fase2.png');
+        game.load.image('tiroFase2', 'img/tiro_f2.png');
+        game.load.audio('somTiro', ['audio/tiro_f2.ogg', 'audio/tiro_f2.m4a']);
+        game.load.audio('trilha', ['audio/dp_sotw.ogg', 'audio/dp_sotw.m4a']);
+        game.load.audio('explosao', ['audio/tiro_f1.ogg', 'audio/tiro_f1.m4a']);
+        game.load.spritesheet('rastro', 'img/rastro.png', 128, 128);
+        game.load.spritesheet('player', 'img/matador.png', 50, 62);
+        game.load.image('vidas', 'img/vdd.png');
+        game.load.image('blueEnemyBullet', 'img/tiro_minion.png');
+
+        // fase 2
+        game.load.image('cenario', 'img/CenarioAnimacao1.png');
+        game.load.audio('trilha', ['audio/mt1.ogg', 'audio/mt1.m4a']);
+        game.load.audio('tiro_laser', ['audio/laser.ogg', 'audio/laser.m4a']);
+        game.load.audio('choraminion', ['audio/choraminion.ogg', 'audio/choraminion.m4a']);
+        game.load.image('tiro', 'img/tiro.png');
+        game.load.spritesheet('rastro', 'img/rastro.png', 128, 128);
     }
 
     this.create = function() {
