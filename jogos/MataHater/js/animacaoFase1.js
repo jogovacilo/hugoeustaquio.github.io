@@ -6,19 +6,14 @@ function animacaoFase1() {
     var irEmbora = false;
     var tirosGrp;
 
-    this.preload = function() {
-
-    }
-
     this.create = function() {
-        $('#loading').hide();
         trilhaSonora.stop();
         game.physics.arcade.gravity.y = 0;
         game.physics.arcade.gravity.x = 0;
-        trilhaSonora = game.add.audio('trilha');
+        trilhaSonora = game.add.audio('trilhaAnimacao1');
         choroMinion = game.add.audio('choraminion');
         trilhaSonora.play();
-        cenario = game.add.tileSprite(0, 0, 800, 513, 'cenario');
+        cenario = game.add.tileSprite(0, 0, 800, 513, 'cenarioAnimaca1');
         daniel.bringToTop();
         daniel = game.add.sprite(700, 250, 'player');
         daniel.animations.add('andar_esquerda', [17, 16, 15, 14, 13, 12, 11, 10, 9], 10, true);
@@ -98,7 +93,6 @@ function animacaoFase1() {
     }
 
     function passaFaseDois() {
-        $('#loading').show();
         this.game.stateTransition.to('faseDois');
     }
 

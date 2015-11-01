@@ -5,17 +5,16 @@ function faseDois() {
     var explosions, daniel, tirosMinion;
 
     this.create = function() {
-        $('#loading').hide();
         somTiro = game.add.audio('somTiro');
         somLaser = game.add.audio('tiro_laser');
         somExplosao = game.add.audio('explosao');
         trilhaSonora.stop();
         trilhaSonoraChefe.stop();
-        trilhaSonora = game.add.audio('trilha', 1, true);
+        trilhaSonora = game.add.audio('trilhaFase2', 1, true);
         trilhaSonora.play('',0,1,true);
         game.physics.arcade.gravity.y = 0;
         game.physics.arcade.gravity.x = 0;
-        cenario = game.add.tileSprite(0, 0, 800, 513, 'cenario');
+        cenario = game.add.tileSprite(0, 0, 800, 513, 'cenarioFaseDois');
         player = game.add.sprite(400, 400, 'jasa');
         player.anchor.setTo(0.5, 0.5);
         game.physics.arcade.enable(player);
@@ -46,7 +45,7 @@ function faseDois() {
         tirosMinion = game.add.group();
         tirosMinion.enableBody = true;
         tirosMinion.physicsBodyType = Phaser.Physics.ARCADE;
-        tirosMinion.createMultiple(30, 'blueEnemyBullet');
+        tirosMinion.createMultiple(30, 'tiroMinion');
         tirosMinion.callAll('crop', null, {x: 90, y: 0, width: 90, height: 70});
         tirosMinion.setAll('alpha', 0.9);
         tirosMinion.setAll('anchor.x', 0.5);
@@ -136,6 +135,13 @@ function faseDois() {
             gameOver();
         } else {
             vidasGrp.getFirstAlive().kill();
+            switch (game.rnd.integerInRange(0,5)) {
+                case 0: sonsBayer.play('ai');break;
+                case 1: sonsBayer.play('aai');break;
+                case 2: sonsBayer.play('vish');break;
+                case 3: sonsBayer.play('ohDesgraca');break;
+                default: sonsBayer.play('argh');break;
+            }
         }
     }
 
