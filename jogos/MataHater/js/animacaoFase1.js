@@ -65,10 +65,13 @@ function animacaoFase1() {
         }
     }
 
-    function trocaLegendaMinion() {
+    function trocaLegendaMinion(texto) {
         legenda.style.fill = "#FF00FF";
         legenda.x = 220;
-        legenda.setText('Minion: "Foram pro meu planeta!"');
+        if (textoDaniel.length != textoCorrente)
+            legenda.setText('Minion: "Foram pro meu planeta!"');
+        else
+            legenda.setText('Minion: "Atire pressionando \'C\'"');
         choroMinion.play();
         game.time.events.add(Phaser.Timer.SECOND * 5, trocaLegendaDaniel, this);
     }

@@ -72,10 +72,10 @@ function faseUm() {
         game.load.image('jasa', 'img/jasa.png');
         game.load.image('nave_minion1', 'img/nave_minion1.png');
         game.load.image('nave_minion2', 'img/minion_fase2.png');
-        game.load.image('chefe', 'img/chefe_fase2.png');
+        game.load.image('chefe_f2', 'img/chefe_fase2.png');
         game.load.image('tiroFase2', 'img/tiro_f2.png');
         game.load.audio('somTiro', ['audio/tiro_f2.ogg', 'audio/tiro_f2.m4a']);
-        game.load.audio('trilhaFase2', ['audio/dp_sotw.ogg', 'audio/dp_sotw.m4a']);
+        game.load.audio('trilhaFase2', ['audio/dp_sw.ogg', 'audio/dp_sw.m4a']);
         game.load.audio('explosao', ['audio/tiro_f1.ogg', 'audio/tiro_f1.m4a']);
         game.load.image('tiroMinion', 'img/tiro_minion.png');
     }

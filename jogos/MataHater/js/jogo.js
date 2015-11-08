@@ -1,5 +1,4 @@
 var game = new Phaser.Game(800, 513, Phaser.AUTO, 'jogo');
-//teste
 window.onload = function () {
     game.stateTransition = game.plugins.add(Phaser.Plugin.StateTransition);
     this.game.stateTransition.configure({
@@ -38,6 +37,7 @@ function reiniciar() {
         frutasDaMorte.removeAll();
         vidasGrp.removeAll();
         caixaGrp.removeAll();
+        trilhaSonora.play();
         if (chefeMinion) {
             chefeMinion.destroy();
             chefeMinion = null;
@@ -50,7 +50,7 @@ var map, objs, tileset, layer, daniel, cursors, socao, corre, tiro, princesas, c
 var tiroGrp, minionGrp, frutasDaMorte, firingTimer = 0, minionsVivos = [], frutasParadas = [], vidas=5, vidasGrp,
     caixaGrp, seFudeu = false, ficaMorto = false, tiros = 15, qtdeTirosTxt, sonsBayer;
 var estaMachucado = false;
-var barraSaudeChefao;
+var barraSaudeChefao, chefe_f2;
 
 // sons
 var somMorri, somWhat, trilhaSonora, trilhaSonoraChefe, somDesgracado, sonsBayer, somSoco, somTiroFalha, somChefeMinion, somTiro;

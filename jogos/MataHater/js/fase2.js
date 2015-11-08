@@ -1,8 +1,11 @@
 function faseDois() {
-    var inclinacao, tirosGrp, naveMinionGrp, fogueteMinionGrp, btnTiro, tmpTiro = 0;
+    var inclinacao, tirosGrp, naveMinionGrp, fogueteMinionGrp, tmpTiro = 0;
     var tempoLancaNave1 = game.rnd.integerInRange(300, 3000);
     var tempoLancaNave2 = game.rnd.integerInRange(1000, 5000);
-    var explosions, daniel, tirosMinion;
+    var explosions, daniel, tirosMinion, navesMortas = 0, foguetesMortos = 0;
+    // quantidade de naves e foguetes a serem abatidos antes de chegar no chefão
+    var qtdeNaves = 45, qtdeFoguetes = 30, enfrentandoChefao = false;
+    var legendaQtdeFoguetes, legendaQtdeNaves, nivelTiro = 0;
 
     this.create = function() {
         somTiro = game.add.audio('somTiro');
@@ -17,19 +20,77 @@ function faseDois() {
         cenario = game.add.tileSprite(0, 0, 800, 513, 'cenarioFaseDois');
         player = game.add.sprite(400, 400, 'jasa');
         player.anchor.setTo(0.5, 0.5);
+        player.scale.x = 0.7;
+        player.scale.y = 0.7;
         game.physics.arcade.enable(player);
         player.body.maxVelocity.setTo(400, 400);
         player.body.drag.setTo(400, 400);
         game.world.setBounds(0,0,800,513);
         player.body.collideWorldBounds = true;
+        player.estaMachucado = false;
+
+        // chefão que será enfrentado no final da fase
+        chefe_f2 = game.add.sprite(400, -200, 'chefe_f2');
+        chefe_f2.exists = false;
+        chefe_f2.alive = false;
+        chefe_f2.explodindo = false;
+        chefe_f2.entradaTriunfal = true;
+        chefe_f2.anchor.setTo(0.5, 0.5);
+        chefe_f2.ultimoTiro = 0;
+        chefe_f2.morre = function() {
+            this.ultimoTiro = game.time.now + 50000;
+            this.explodindo = true;
+        };
+        chefe_f2.update = function() {
+            if (tiro && this.alive && !this.entradaTriunfal && game.time.now > 2500 + this.ultimoTiro) {
+                for (i=0; i<3; i++) {
+                    tiro = tirosMinion.getFirstExists(false);
+                    this.ultimoTiro = game.time.now;
+                    if (i == 0)
+                        tiro.reset(this.x -25, 130);
+                    else if (i == 1)
+                        tiro.reset(this.x -125, 130);
+                    else if (i == 2)
+                        tiro.reset(this.x +125, 130);
+                    var angle = game.physics.arcade.moveToObject(tiro, player, 340);
+                    tiro.angle = game.math.radToDeg(angle);
+                    somLaser.play();
+                }
+            }
+            if (this.explodindo) {
+                for (i=0; i<60; i++) {
+                    var explosion = explosions.getFirstExists(false);
+                    if (explosion) {
+                        explosion.reset(this.body.x + game.rnd.integerInRange(-200, 500), this.body.y + game.rnd.integerInRange(-200, 200));
+                        explosion.alpha = 0.7;
+                        somExplosao.play();
+                        explosion.play('explosion', 30, false, true);
+                    }
+                }
+            }
+        }
+        game.physics.arcade.enable(chefe_f2);
+
+        var imgQtdeFoguetes = game.add.image(10, 12, 'nave_minion2');
+        var imgQtdeNaves = game.add.image(85, 15, 'nave_minion1');
+        imgQtdeFoguetes.scale.x = 0.12;
+        imgQtdeFoguetes.scale.y = 0.12;
+        imgQtdeNaves.scale.x = 0.4;
+        imgQtdeNaves.scale.y = 0.4;
+        legendaQtdeNaves = game.add.text(115, 15, ': 30', { fontSize: '18px', fill: '#FFFFFF' });
+        legendaQtdeFoguetes = game.add.text(40, 15, ': 15', { fontSize: '18px', fill: '#FFFFFF' });
+        caixaGrp = game.add.group();
 
         vidasGrp = game.add.group();
+        vidasGrp.create(625, 15, 'vidas');
+        vidasGrp.create(650, 15, 'vidas');
         vidasGrp.create(675, 15, 'vidas');
         vidasGrp.create(700, 15, 'vidas');
         vidasGrp.create(725, 15, 'vidas');
         vidasGrp.create(750, 15, 'vidas');
         vidasGrp.create(775, 15, 'vidas');
         vidasGrp.fixedToCamera = true;
+        vidas = 7;
 
         tirosGrp = game.add.group();
         tirosGrp.enableBody = true;
@@ -39,7 +100,6 @@ function faseDois() {
         tirosGrp.setAll('anchor.y', 1);
         tirosGrp.setAll('outOfBoundsKill', true);
         tirosGrp.setAll('checkWorldBounds', true);
-        btnTiro = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
         // tiros inimigos
         tirosMinion = game.add.group();
@@ -81,6 +141,7 @@ function faseDois() {
         fogueteMinionGrp.setAll('scale.x', 0.6);
         fogueteMinionGrp.setAll('scale.y', 0.6);
         fogueteMinionGrp.forEach(function(fogueteMinion) {
+            fogueteMinion.jaFoiAcertado = false; // o foguete só será explodido quando receber um segundo tiro
             rastroNave(fogueteMinion);
             fogueteMinion.events.onKilled.add(function() {
                 fogueteMinion.trail.kill();
@@ -90,45 +151,80 @@ function faseDois() {
         explosions = game.add.group();
         explosions.enableBody = true;
         explosions.physicsBodyType = Phaser.Physics.ARCADE;
-        explosions.createMultiple(30, 'rastro');
+        explosions.createMultiple(60, 'rastro');
         explosions.setAll('anchor.x', 0.5);
         explosions.setAll('anchor.y', 0.5);
         explosions.forEach( function(explosion) {
             explosion.animations.add('explosion');
         });
+
         lancaNaveMinion();
         lancaFogueteMinion();
-        vidas = 5;
+        // adiciona controle similar a fase 1, mas permite tb que use o espaco pra atirar
+        tiroF1 = game.input.keyboard.addKey(Phaser.Keyboard.C);
     }
 
     this.update = function() {
         game.physics.arcade.overlap(naveMinionGrp, tirosGrp, mataNaveMinion, null, this);
         game.physics.arcade.overlap(fogueteMinionGrp, tirosGrp, acertaFogueteMinion, null, this);
-        game.physics.arcade.overlap(player, naveMinionGrp, trombaNave, null, this);
-        game.physics.arcade.overlap(player, fogueteMinionGrp, trombaNave, null, this);
-        game.physics.arcade.overlap(player, tirosMinion, machuca, null, this);
+        game.physics.arcade.collide(player, caixaGrp, pegaCaixa, null, this);
+        if (!player.estaMachucado) {
+            game.physics.arcade.overlap(player, naveMinionGrp, trombaNave, null, this);
+            game.physics.arcade.overlap(player, fogueteMinionGrp, trombaNave, null, this);
+            game.physics.arcade.overlap(player, tirosMinion, machuca, null, this);
+        }
+
+        // chefão da fase terá uma entrada triunfal
+        if (chefe_f2.exists && chefe_f2.entradaTriunfal) {
+            if (chefe_f2.y < 100)
+                chefe_f2.y++;
+            else
+                chefe_f2.entradaTriunfal = false; // já fez sua entrada triunfal
+        } else if (chefe_f2.exists) {
+            game.physics.arcade.overlap(tirosGrp, chefe_f2, acertaChefeMinion, null, this);
+            game.physics.arcade.overlap(player, chefe_f2, trombaChefe, null, this);
+        }
+
+        // fuga do chefe minion
+        if (chefe_f2.explodindo) {
+            chefe_f2.y--;
+        }
+
         cenario.tilePosition.y += 2;
-        player.body.acceleration.x = 0;
         player.angle = player.body.velocity.x * 0.05;
+        player.body.acceleration.x = 0;
+        player.body.acceleration.y = 0;
         if (cursors.left.isDown) {
             player.body.acceleration.x = -500;
         } else if (cursors.right.isDown) {
             player.body.acceleration.x = 500;
         }
-        if (btnTiro.isDown)
+        if (tiroF1.isDown)
             atirar();
+        if (cursors.up.isDown) {
+            player.body.acceleration.y = -420;
+        } else if (cursors.down.isDown) {
+            player.body.acceleration.y = 420;
+        }
         if (daniel)
             daniel.animations.play('morte');
+        if (player.estaMachucado) {
+            player.alpha = (player.alpha == 1) ? 0 : 1;
+        } else {
+            player.alpha = 1;
+        }
     }
 
     function trombaNave(player, naveInimiga) {
-        mataNaveMinion(naveInimiga, tiroGrp.getFirstExists(false));
+        mataNaveMinion(naveInimiga, null);
         machuca();
     }
 
     function machuca(jogador, tiro) {
         if (tiro)
             tiro.kill();
+        if (player.estaMachucado) // se já esta machucado nada acontece
+            return ;
         // tirar uma vida do jogador, verificar se ele tem mais que zero vidas
         vidas -= 1;
         if (!(vidas >= 0)) {
@@ -142,6 +238,8 @@ function faseDois() {
                 case 3: sonsBayer.play('ohDesgraca');break;
                 default: sonsBayer.play('argh');break;
             }
+            player.estaMachucado = true;
+            game.time.events.add(Phaser.Timer.SECOND*2, function(){player.estaMachucado = false;}, this);
         }
     }
 
@@ -186,14 +284,17 @@ function faseDois() {
 
     function lancaNaveMinion() {
         var naveMinion = naveMinionGrp.getFirstExists(false);
-        tempoLancaNave1 = game.rnd.integerInRange(300, 3000);
+        if (!enfrentandoChefao)
+            tempoLancaNave1 = game.rnd.integerInRange(500, 2700);
+        else
+            tempoLancaNave1 = game.rnd.integerInRange(2000, 2500);
         if (naveMinion) {
             naveMinion.reset(game.rnd.integerInRange(0, game.width), -20);
             naveMinion.body.velocity.x = game.rnd.integerInRange(-300, 300);
             naveMinion.body.velocity.y = 300;
             naveMinion.body.drag.x = 100;
             naveMinion.trail.start(false, 800, 1);
-            // TODO rever
+            // tiros que as naves minions disparam
             naveMinion.tiros = 1;
             naveMinion.ultimoTiro = 0;
             naveMinion.update = function() {
@@ -201,12 +302,11 @@ function faseDois() {
                 naveMinion.trail.x = naveMinion.x;
                 naveMinion.trail.y = naveMinion.y - 10;
                 tiro = tirosMinion.getFirstExists(false);
-                // TODO rever isso
                 if (tiro && this.alive && this.tiros && this.y > game.width / 8 && game.time.now > 2500 + this.ultimoTiro) {
                     this.ultimoTiro = game.time.now;
                     this.tiros = 0;
                     tiro.reset(this.x, this.y + this.height / 2);
-                    var angle = game.physics.arcade.moveToObject(tiro, player, 400);
+                    var angle = game.physics.arcade.moveToObject(tiro, player, 340);
                     tiro.angle = game.math.radToDeg(angle);
                     somLaser.play();
                 }
@@ -216,13 +316,19 @@ function faseDois() {
                 }
             }
         }
-        game.time.events.add(tempoLancaNave1, lancaNaveMinion);
+        if (!chefe_f2.explodindo)
+            game.time.events.add(tempoLancaNave1, lancaNaveMinion);
     }
 
     function lancaFogueteMinion() {
         var foguete = fogueteMinionGrp.getFirstExists(false);
-        tempoLancaNave2 = game.rnd.integerInRange(1000, 5000);
+        if (!enfrentandoChefao)
+            tempoLancaNave2 = game.rnd.integerInRange(900, 3700);
+        else
+            tempoLancaNave2 = game.rnd.integerInRange(3000, 6000);
         if (foguete) {
+            foguete.jaFoiAcertado = false;
+            foguete.alpha = 1;
             foguete.reset(game.rnd.integerInRange(0, game.width), -200);
             foguete.body.velocity.x = game.rnd.integerInRange(-500, 500);
             foguete.body.velocity.y = 300;
@@ -237,42 +343,158 @@ function faseDois() {
                 }
             }
         }
-        game.time.events.add(tempoLancaNave2, lancaFogueteMinion);
+        if (!chefe_f2.explodindo)
+            game.time.events.add(tempoLancaNave2, lancaFogueteMinion);
     }
 
     function mataNaveMinion(nave, tiro) {
         var explosion = explosions.getFirstExists(false);
-        explosion.reset(nave.body.x + nave.body.halfWidth, nave.body.y + nave.body.halfHeight);
-        explosion.body.velocity.y = nave.body.velocity.y;
-        explosion.alpha = 0.7;
-        somExplosao.play();
-        explosion.play('explosion', 30, false, true);
+        if (explosion) {
+            explosion.reset(nave.body.x + nave.body.halfWidth, nave.body.y + nave.body.halfHeight);
+            explosion.body.velocity.y = nave.body.velocity.y;
+            explosion.alpha = 0.7;
+            somExplosao.play();
+            explosion.play('explosion', 30, false, true);
+        }
+        qtdeNaves--;
+        if (qtdeNaves >= 0) {
+            legendaQtdeNaves.setText(': ' + qtdeNaves);
+            // a cada 10 naves abatidas joga uma caixa de vida
+            if (qtdeNaves % 10 == 0) {
+                jogaCaixa('caixa_vida', nave.x, nave.y);
+            }
+        }
+        if (qtdeNaves <= 0 && qtdeFoguetes <= 0 && !enfrentandoChefao) {
+            game.time.events.add(Phaser.Timer.SECOND * 5, chamaChefao, this);
+            enfrentandoChefao = true;
+        }
         nave.kill();
+        acertaTiro();
         if (tiro)
             tiro.kill();
     }
 
     function acertaFogueteMinion(foguete, tiro) {
-        var explosion = explosions.getFirstExists(false);
-        explosion.reset(foguete.body.x + foguete.body.halfWidth, foguete.body.y + foguete.body.halfHeight);
-        explosion.body.velocity.y = foguete.body.velocity.y;
-        explosion.alpha = 0.7;
-        somExplosao.play();
-        explosion.play('explosion', 30, false, true);
-        foguete.kill();
         if (tiro)
             tiro.kill();
+        if (foguete.jaFoiAcertado) {
+            var explosion = explosions.getFirstExists(false);
+            if (explosion) {
+                explosion.reset(foguete.body.x + foguete.body.halfWidth, foguete.body.y + foguete.body.halfHeight);
+                explosion.body.velocity.y = foguete.body.velocity.y;
+                explosion.alpha = 0.7;
+                somExplosao.play();
+                explosion.play('explosion', 30, false, true);
+            }
+            foguete.kill();
+            qtdeFoguetes--;
+            if (qtdeFoguetes >= 0) {
+                legendaQtdeFoguetes.setText(': ' + qtdeFoguetes);
+                // a cada 5 foguetes abatidos melhora um pouco o tiro
+                if (qtdeFoguetes % 5 == 0) {
+                    jogaCaixa('caixa_tiro', foguete.x, foguete.y);
+                }
+            }
+            acertaTiro();
+            if (qtdeNaves <= 0 && qtdeFoguetes <= 0 && !enfrentandoChefao) {
+                game.time.events.add(Phaser.Timer.SECOND * 5, chamaChefao, this);
+                enfrentandoChefao = true;
+            }
+        } else {
+            foguete.jaFoiAcertado = true;
+            foguete.alpha = 0.5;
+        }
+    }
+
+    function chamaChefao() {
+        chefe_f2.exists = true;
+        chefe_f2.alive = true;
+        chefe_f2.reset(game.width / 2, -chefe_f2.height);
+        chefe_f2.health = 350;
+        tmpChefeAtira = game.time.now + 5000;
+        barraSaudeChefao = new HealthBar(game, {x: 380, y: 490, height: 30,bar: {color: '#660099'},});
+    }
+
+    function acertaChefeMinion(chefe, tiro) {
+        chefe.health--;
+        barraSaudeChefao.setPercent(Math.round((chefe.health * 100) / 350 ));
+        if (chefe.health <= 0) {
+            chefe.morre();
+        } else {
+            var explosion = explosions.getFirstExists(false);
+            explosion.reset(tiro.body.x + tiro.body.halfWidth, tiro.body.y + tiro.body.halfHeight);
+            explosion.alpha = 0.7;
+            somExplosao.play();
+            explosion.play('explosion', 30, false, true);
+            acertaTiro();
+        }
+        tiro.kill();
+    }
+
+    function trombaChefe(player, chefe) {
+        machuca();
+        player.y += 15;
+    }
+
+    function jogaCaixa(imgCaixa, x, y) {
+        novaCaixa = caixaGrp.create(x, y, imgCaixa);
+        game.physics.arcade.enable(novaCaixa);
+        novaCaixa.body.gravity.y = 175;
+        novaCaixa.body.gravity.x = 0;
+    }
+
+    function pegaCaixa(player, caixa) {
+        if (caixa.key == 'caixa_vida' && vidas < 7) {
+            vidas = 7;
+            vidasGrp.forEachDead(function(vida){vida.revive()});
+        } else if (caixa.key == 'caixa_tiro') {
+            tirosGrp.createMultiple(3, 'tiroFase2');
+            tirosGrp.setAll('anchor.x', 0.5);
+            tirosGrp.setAll('anchor.y', 1);
+            tirosGrp.setAll('outOfBoundsKill', true);
+            tirosGrp.setAll('checkWorldBounds', true);
+            nivelTiro++;
+        }
+        caixa.kill();
     }
 
     function atirar() {
-        var tiro = tirosGrp.getFirstExists(false);
-        if (tiro && game.time.now > tmpTiro) {
-            tiro.reset(player.x + (20 * Math.sin(game.math.degToRad(player.angle))), player.y);
-            tiro.angle = player.angle;
-            game.physics.arcade.velocityFromAngle(tiro.angle - 90, 400, tiro.body.velocity);
-            tiro.body.velocity.x += player.body.velocity.x;
-            somTiro.play();
-            tmpTiro = game.time.now + 100;
+        var qtdeTirosDisparados = (nivelTiro < 2) ? 1 : 2;
+        var disparou = false;
+        for (i = 0; i < qtdeTirosDisparados; i++) {
+            var tiro = tirosGrp.getFirstExists(false);
+            if (tiro && game.time.now > tmpTiro) {
+                tiro.reset(player.x + (20 * Math.sin(game.math.degToRad(player.angle))), player.y);
+                if (nivelTiro < 2) {
+                    tiro.angle = player.angle;
+                } else if (i == 0){
+                    tiro.angle = player.angle - 20;
+                } else {
+                    tiro.angle = player.angle + 20;
+                }
+                game.physics.arcade.velocityFromAngle(tiro.angle - 90, 400, tiro.body.velocity);
+                tiro.body.velocity.x += player.body.velocity.x;
+                disparou = true;
+            }
+        }
+        if (disparou) {
+            somLaser.play();
+            tmpTiro = game.time.now + 125;
+        }
+    }
+
+    function acertaTiro() {
+        probabilidade = 20;
+        if (chefe_f2.alive) {
+            probabilidade = 140;
+        }
+        switch (game.rnd.integerInRange(0, probabilidade)) {
+            case 1: sonsBayer.play('morreMinion');break;
+            case 2: sonsBayer.play('viado');break;
+            case 3: sonsBayer.play('hahaha');break;
+            case 4: sonsBayer.play('morreAi');break;
+            case 5: sonsBayer.play('coco');break;
+            case 6: sonsBayer.play('teMatar');break;
         }
     }
 }
