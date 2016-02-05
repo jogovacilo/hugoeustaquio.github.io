@@ -78,6 +78,14 @@ function faseUm() {
         game.load.audio('trilhaFase2', ['audio/dp_sw.ogg', 'audio/dp_sw.m4a']);
         game.load.audio('explosao', ['audio/tiro_f1.ogg', 'audio/tiro_f1.m4a']);
         game.load.image('tiroMinion', 'img/tiro_minion.png');
+
+        // transicao fase 3
+        game.load.image('cenarioTransicaoFase3_1', 'img/planeta.jpg');
+        game.load.image('cenarioTransicaoFase3_2', 'img/trans_f3.png');
+
+        // fase 3
+        game.load.tilemap('cenario3js', 'js/cenario2.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.image('cenario3img', 'img/cenario_f2.png');
     }
 
     this.create = function() {
@@ -112,7 +120,7 @@ function faseUm() {
         game.canvas.id = 'canvas';
         map = game.add.tilemap('cenariojs');
         map.addTilesetImage('cenario', 'cenarioimg');
-        map.setCollision([711, 657, 666, 559, 750, 733, 416]);
+        map.setCollision([86, 59, 72, 48, 75, 48, 36]);
 
         layer = map.createLayer('World1');
         layer.resizeWorld();

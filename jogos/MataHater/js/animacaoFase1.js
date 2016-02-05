@@ -110,7 +110,6 @@ function animacaoFase1() {
     }
 
     function explodeMinion(minion, tiro) {
-        console.log('faz explodir');
         var explosion = explosions.getFirstExists(false);
         explosion.reset(minion.body.x+50, minion.body.y+50);
         explosion.body.velocity.y = minion.body.velocity.y;

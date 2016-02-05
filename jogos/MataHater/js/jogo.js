@@ -6,18 +6,16 @@ window.onload = function () {
         ease: Phaser.Easing.Exponential.InOut,
         properties: {
             alpha: 0,
-            scale: {
-                x: 1.4,
-                y: 1.4
-            }
+            scale: {x: 1.4, y: 1.4}
         }
     });
     //game.state.add('aguarde', aguarde);
     game.state.add('faseUm', faseUm);
     game.state.add('animacaoFase1', animacaoFase1);
     game.state.add('faseDois', faseDois);
+    game.state.add('animacaoFase2', animacaoFase2);
     game.state.add('faseTres', faseTres);
-    game.state.add('zerou', zerou);
+    // game.state.add('zerou', zerou);
     game.state.start('faseUm');
 }
 

@@ -40,6 +40,7 @@ function faseDois() {
         chefe_f2.morre = function() {
             this.ultimoTiro = game.time.now + 50000;
             this.explodindo = true;
+            game.time.events.add(Phaser.Timer.SECOND*3, function(){this.game.stateTransition.to('animacaoFase2');});
         };
         chefe_f2.update = function() {
             if (tiro && this.alive && !this.entradaTriunfal && game.time.now > 2500 + this.ultimoTiro) {
