@@ -162,7 +162,7 @@ function faseDois() {
         lancaNaveMinion();
         lancaFogueteMinion();
         // adiciona controle similar a fase 1, mas permite tb que use o espaco pra atirar
-        tiroF1 = game.input.keyboard.addKey(Phaser.Keyboard.C);
+        tiroF1 = game.input.keyboard.addKey(Phaser.Keyboard.X);
     }
 
     this.update = function() {

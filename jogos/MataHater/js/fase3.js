@@ -14,6 +14,7 @@ function faseTres() {
         layer = map.createLayer('World2');
         layer.resizeWorld();
         vidasGrp = game.add.group();
+        vidas = 5;
         vidasGrp.create(675, 15, 'vidas');
         vidasGrp.create(700, 15, 'vidas');
         vidasGrp.create(725, 15, 'vidas');
@@ -27,6 +28,8 @@ function faseTres() {
         game.physics.arcade.enable(caixaGrp);
         cxTiro.body.collideWorldBounds = true;
         cxVida.body.collideWorldBounds = true;
+        tiros = 15;
+        tiro = game.input.keyboard.addKey(Phaser.Keyboard.C);
         qtdeTirosTxt = game.add.text(25, 8, 'x15', { fontSize: '22px', fill: '#FFFFFF' });
         qtdeTirosTxt.fixedToCamera = true;
 

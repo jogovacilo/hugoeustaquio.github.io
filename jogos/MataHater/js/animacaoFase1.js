@@ -71,7 +71,7 @@ function animacaoFase1() {
         if (textoDaniel.length != textoCorrente)
             legenda.setText('Minion: "Foram pro meu planeta!"');
         else
-            legenda.setText('Minion: "Atire pressionando \'C\'"');
+            legenda.setText('Minion: "Por favor não me mate!!;-(!"');
         choroMinion.play();
         game.time.events.add(Phaser.Timer.SECOND * 5, trocaLegendaDaniel, this);
     }
