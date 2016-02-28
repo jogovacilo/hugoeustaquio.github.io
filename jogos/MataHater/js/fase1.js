@@ -86,6 +86,10 @@ function faseUm() {
         // fase 3
         game.load.tilemap('cenario3js', 'js/cenario2.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image('cenario3img', 'img/cenario_f2.png');
+
+        // confronto final
+        game.load.image('salao_chefao', 'img/salao.png');
+        game.load.tilemap('cenariofinal', 'js/final.json', null, Phaser.Tilemap.TILED_JSON);
     }
 
     this.create = function() {

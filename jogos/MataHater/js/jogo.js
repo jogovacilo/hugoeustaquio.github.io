@@ -15,6 +15,7 @@ window.onload = function () {
     game.state.add('faseDois', faseDois);
     game.state.add('animacaoFase2', animacaoFase2);
     game.state.add('faseTres', faseTres);
+    game.state.add('confrontoFinal', confrontoFinal);
     // game.state.add('zerou', zerou);
     game.state.start('faseUm');
 }
@@ -24,6 +25,10 @@ function reiniciar() {
     seFudeu = false, ficaMorto = false, estaMachucado = false;
     daniel.x = 32;
     daniel.y = 400;
+    if (chefeMinion) {
+        chefeMinion.destroy();
+        chefeMinion = false;
+    }
     if (btnRecomecar)
         btnRecomecar.destroy();
     if (game.state.current != 'faseUm'){
@@ -36,10 +41,6 @@ function reiniciar() {
         vidasGrp.removeAll();
         caixaGrp.removeAll();
         trilhaSonora.play();
-        if (chefeMinion) {
-            chefeMinion.destroy();
-            chefeMinion = null;
-        }
     }
     inicioJogo();
 }

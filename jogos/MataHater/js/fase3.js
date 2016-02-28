@@ -229,8 +229,9 @@ function faseTres() {
         if (game.time.now > firingTimer) {
             arremessoMinion();
         }
-        if (daniel.x > 6333) {
+        if (daniel.x > 6310) {
             // entrar no castelo do chefão
+            game.stateTransition.to("confrontoFinal");
         }
     }
 
